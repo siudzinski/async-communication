@@ -1,0 +1,17 @@
+name: app
+services:
+- name: achievements-api
+  project: src/Achievements/Achievements.csproj
+  bindings:
+  - port: 5001
+    protocol: http
+- name: rabbit
+  image: rabbitmq:3-management
+  bindings:
+    - name: rabbit-ui
+      protocol: http
+      port: 15672
+      containerPort: 15672
+    - name: amqp
+      protocol: amqp
+      port: 5672
