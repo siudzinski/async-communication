@@ -1,3 +1,4 @@
+using Achievements.Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,18 +21,8 @@ public class AchievementsController : ControllerBase
     [HttpPost("achievements/unlock/{achievementId}")]
     public async Task<ActionResult> Unlock(Guid achievementId)
     {
-        await _publishEndpoint.Publish<AchievementsUnlocked>(new AchievementsUnlocked(achievementId));
+        await _publishEndpoint.Publish<IAchievementUnlocked>(new { Id = achievementId });
 
         return Ok();
-    }
-}
-
-public class AchievementsUnlocked
-{
-    public Guid Id { get; }
-
-    public AchievementsUnlocked(Guid id)
-    {
-        Id = id;
     }
 }

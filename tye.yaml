@@ -5,6 +5,11 @@ services:
   bindings:
   - port: 5001
     protocol: http
+- name: notifications
+  project: src/Notifications/Notifications.csproj
+  bindings:
+  - port: 5002
+    protocol: http
 - name: rabbit
   image: rabbitmq:3-management
   bindings:
