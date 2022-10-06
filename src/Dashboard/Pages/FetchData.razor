@@ -1,0 +1,53 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Achievements</PageTitle>
+
+<h1>Achievements</h1>
+
+@if (achievements == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var achievement in achievements)
+            {
+                <tr>
+                    <td>@achievement.Id</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private HubConnection achievementsHubConnection;
+    private List<Achievement> achievements = new List<Achievement>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        achievementsHubConnection = new HubConnectionBuilder()  
+            .WithUrl("http://localhost:5002/achievements")  
+            .Build();
+  
+        achievementsHubConnection.On("AchievementUnlocked", (Guid id) => 
+        {
+            achievements.Add(new Achievement(id));
+            StateHasChanged();
+        });
+
+        await achievementsHubConnection.StartAsync();
+    }
+
+    record Achievement(Guid Id);
+}

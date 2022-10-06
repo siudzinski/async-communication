@@ -1,24 +1,28 @@
-using System.Text.Json;
 using Achievements.Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
+using Notifications.Hubs;
 
 namespace Notifications.Consumers
 {
     public class AchievementUnlockedConsumer : IConsumer<IAchievementUnlocked>
     {
         private readonly ILogger<AchievementUnlockedConsumer> _logger;
+        private readonly IHubContext<AchievementHub, IAchievementHub> _hubContext;
 
-        public AchievementUnlockedConsumer(ILogger<AchievementUnlockedConsumer> logger)
+        public AchievementUnlockedConsumer(
+            ILogger<AchievementUnlockedConsumer> logger, 
+            IHubContext<AchievementHub, IAchievementHub> hubContext)
         {
             _logger = logger;
+            _hubContext = hubContext;
         }
 
-        public Task Consume(ConsumeContext<IAchievementUnlocked> context)
+        public async Task Consume(ConsumeContext<IAchievementUnlocked> context)
         {
-            var message = JsonSerializer.Serialize(context.Message);
-            _logger.LogInformation($"Message consumed: {message}");
+            _logger.LogInformation($"Message consumed: {context.Message.Id}");
 
-            return Task.CompletedTask;
+            await _hubContext.Clients.All.AchievementUnlocked(context.Message.Id);
         }
     }
 }
