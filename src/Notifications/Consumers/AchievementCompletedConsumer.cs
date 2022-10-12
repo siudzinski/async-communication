@@ -6,24 +6,24 @@ using Notifications.Hubs;
 
 namespace Notifications.Consumers
 {
-    public class AchievementUnlockedConsumer : IConsumer<IAchievementUnlocked>
+    public class AchievementCompletedConsumer: IConsumer<IAchievementCompleted>
     {
-        private readonly ILogger<AchievementUnlockedConsumer> _logger;
+        private readonly ILogger<AchievementCompletedConsumer> _logger;
         private readonly IHubContext<AchievementHub, IAchievementHub> _hubContext;
 
-        public AchievementUnlockedConsumer(
-            ILogger<AchievementUnlockedConsumer> logger, 
+        public AchievementCompletedConsumer(
+            ILogger<AchievementCompletedConsumer> logger, 
             IHubContext<AchievementHub, IAchievementHub> hubContext)
         {
             _logger = logger;
             _hubContext = hubContext;
         }
 
-        public async Task Consume(ConsumeContext<IAchievementUnlocked> context)
+        public async Task Consume(ConsumeContext<IAchievementCompleted> context)
         {
             _logger.LogInformation($"Message consumed: {context.Message.Id}");
 
-            await _hubContext.Clients.All.AchievementStateChanged(context.Message.Id, States.Unlocked.ToString());
+            await _hubContext.Clients.All.AchievementStateChanged(context.Message.Id, States.Completed.ToString());
         }
     }
 }

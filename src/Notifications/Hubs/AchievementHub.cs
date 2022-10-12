@@ -4,7 +4,7 @@ namespace Notifications.Hubs;
 
 public interface IAchievementHub
 {
-    Task AchievementUnlocked(Guid achievementId);
+    Task AchievementStateChanged(Guid achievementId, string state);
 }
 
 public class AchievementHub : Hub<IAchievementHub> { }

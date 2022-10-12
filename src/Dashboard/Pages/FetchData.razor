@@ -17,6 +17,7 @@ else
         <thead>
             <tr>
                 <th>Id</th>
+                <th>State</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@ else
             {
                 <tr>
                     <td>@achievement.Id</td>
+                    <td>@achievement.State</td>
                 </tr>
             }
         </tbody>
@@ -36,18 +38,30 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        achievementsHubConnection = new HubConnectionBuilder()  
+        achievementsHubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5002/achievements")  
             .Build();
   
-        achievementsHubConnection.On("AchievementUnlocked", (Guid id) => 
+        achievementsHubConnection.On("AchievementStateChanged", (Guid id, string state) => 
         {
-            achievements.Add(new Achievement(id));
+            var achievement = achievements.FirstOrDefault(_ => _.Id == id);
+            if(achievement == null)
+            {
+                achievements.Add(new Achievement { Id = id, State = state});
+            }
+            else
+            {
+                achievement.State = state;
+            }
             StateHasChanged();
         });
 
         await achievementsHubConnection.StartAsync();
     }
 
-    record Achievement(Guid Id);
+    class Achievement
+    {
+        public Guid Id { get; set; }
+        public string State { get; set; }
+    }
 }
