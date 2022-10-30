@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace Notifications.Consumers
 {
-    public class AchievementUnlockedConsumer : IConsumer<IAchievementUnlocked>
+    public class AchievementUnlockedConsumer : IConsumer<AchievementUnlocked>
     {
         private readonly ILogger<AchievementUnlockedConsumer> _logger;
 
@@ -12,7 +12,7 @@ namespace Notifications.Consumers
             _logger = logger;
         }
 
-        public Task Consume(ConsumeContext<IAchievementUnlocked> context)
+        public Task Consume(ConsumeContext<AchievementUnlocked> context)
         {
             _logger.LogInformation($"Message consumed: {context.Message.Id}");
 

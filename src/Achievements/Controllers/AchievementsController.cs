@@ -1,5 +1,5 @@
-using Achievements.Contracts;
-using MassTransit;
+using Achievements.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Achievements.Controllers;
@@ -8,29 +8,30 @@ namespace Achievements.Controllers;
 public class AchievementsController : ControllerBase
 {
     private readonly ILogger<AchievementsController> _logger;
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IMediator _mediator;
+
 
     public AchievementsController(
-        ILogger<AchievementsController> logger, 
-        IPublishEndpoint publishEndpoint)
+        ILogger<AchievementsController> logger,
+        IMediator mediator)
     {
         _logger = logger;
-        _publishEndpoint = publishEndpoint;
+        _mediator = mediator;
     }
 
     [HttpPost("achievements/{achievementId}/unlock")]
     public async Task<ActionResult> Unlock(Guid achievementId)
     {
-        await _publishEndpoint.Publish<IAchievementUnlocked>(new { Id = achievementId });
+        await _mediator.Send(new UnlockAchievementCommand(achievementId));
 
         return Ok();
     }
 
-    [HttpPost("achievements/{achievementId}/accomplish")]
-    public async Task<ActionResult> Accomplish(Guid achievementId)
-    {
-        await _publishEndpoint.Publish<IAchievementCompleted>(new { Id = achievementId });
+    // [HttpPost("achievements/{achievementId}/accomplish")]
+    // public async Task<ActionResult> Accomplish(Guid achievementId)
+    // {
+    //     await _publishEndpoint.Publish<IAchievementCompleted>(new { Id = achievementId });
 
-        return Ok();
-    }
+    //     return Ok();
+    // }
 }

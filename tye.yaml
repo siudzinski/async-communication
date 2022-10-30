@@ -20,3 +20,18 @@ services:
     - name: amqp
       protocol: amqp
       port: 5672
+- name: postgres
+  image: postgres:14
+  env:
+  - name: POSTGRES_USER
+    value: postgres
+  - name: POSTGRES_PASSWORD
+    value: password
+  - name: POSTGRES_DB
+    value: postgres
+  bindings:
+  - port: 5432
+    connectionString: Server=${host};Port=${port};User Id=${env:POSTGRES_USER};Password=${env:POSTGRES_PASSWORD};
+  volumes:
+  - name: postgres-achievements
+    target: /var/lib/postgresql/data
