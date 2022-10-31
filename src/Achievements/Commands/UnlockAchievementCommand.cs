@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Achievements.Contracts;
 using Achievements.Domain;
 using Achievements.Infrastructure;
@@ -38,11 +37,7 @@ public class UnlockAchievementCommandHandler : ICommandHandler<UnlockAchievement
 
         achievement.Unlock();
 
-        var outboxMessage = new OutboxMessage(
-            DateTime.UtcNow, 
-            typeof(AchievementUnlocked).FullName,
-            JsonSerializer.Serialize(new AchievementUnlocked { Id = command.AchievementId }));
-
+        var outboxMessage = OutboxMessage.Create(new AchievementUnlocked { Id = command.AchievementId });
         await _achievementsContext.OutboxMessages.AddAsync(outboxMessage);
 
         await _achievementsContext.SaveChangesAsync(cancellationToken);

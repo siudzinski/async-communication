@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Shared.Outbox;
 
 public class OutboxMessage
@@ -10,12 +12,20 @@ public class OutboxMessage
 
     private OutboxMessage() { }
 
-    public OutboxMessage(DateTime occurredOn, string type, string data)
+    private OutboxMessage(DateTime occurredOn, string type, string data)
     {
         Id = Guid.NewGuid();
         OccurredOn = occurredOn;
         Type = type;
         Data = data;
         ProcessedDate = null;
+    }
+
+    public static OutboxMessage Create(object data)
+    {
+        return new OutboxMessage(
+            DateTime.UtcNow, 
+            data.GetType().FullName,
+            JsonSerializer.Serialize(data));
     }
 }

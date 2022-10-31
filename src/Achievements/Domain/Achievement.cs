@@ -8,9 +8,14 @@ public class Achievement
 
     private Achievement() { }
 
-    public Achievement(Guid id)
+    private Achievement(Guid id)
     {
         Id = id;
+    }
+
+    public static Achievement CreateNew()
+    {
+        return new Achievement(Guid.NewGuid());
     }
 
     public void Unlock()

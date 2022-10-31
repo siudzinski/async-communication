@@ -29,6 +29,7 @@ public class OutboxBackgroundService : BackgroundService
         while (!cancellationToken.IsCancellationRequested && await _timer.WaitForNextTickAsync(cancellationToken))
         {
             await ProcessOutboxMessages(cancellationToken);
+            await RemoveHandledOutboxMessages(cancellationToken);
         }
     }
 
@@ -51,6 +52,16 @@ public class OutboxBackgroundService : BackgroundService
         }
     }
 
+    private async Task RemoveHandledOutboxMessages(CancellationToken cancellationToken)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+        using IDbConnection connection = new NpgsqlConnection(configuration.GetConnectionString("postgres"));
+
+        await ExecuteRemoveHandledOutboxMessages(connection);
+    }
+
     private object DeserializeMessage(string data, string type)
     {
         var assembly = Assembly.GetAssembly(typeof(Contracts.AchievementUnlocked));
@@ -66,4 +77,9 @@ public class OutboxBackgroundService : BackgroundService
         await connection.ExecuteAsync(
             "UPDATE achievements.\"OutboxMessages\" SET \"ProcessedDate\" = @ProcessedDate WHERE \"Id\" = @Id", 
             new { ProcessedDate = DateTime.UtcNow, Id = outboxMessageId });
+
+    private async Task ExecuteRemoveHandledOutboxMessages(IDbConnection connection) =>
+        await connection.ExecuteAsync(
+            "DELETE FROM achievements.\"OutboxMessages\" WHERE \"ProcessedDate\" < @Date",
+            new { Date = DateTime.UtcNow.AddDays(-1) });
 }

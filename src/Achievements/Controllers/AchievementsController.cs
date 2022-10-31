@@ -19,6 +19,14 @@ public class AchievementsController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpPost("achievements")]
+    public async Task<ActionResult> Create()
+    {
+        await _mediator.Send(new CreateAchievementCommand());
+
+        return Ok();
+    }
+
     [HttpPost("achievements/{achievementId}/unlock")]
     public async Task<ActionResult> Unlock(Guid achievementId)
     {

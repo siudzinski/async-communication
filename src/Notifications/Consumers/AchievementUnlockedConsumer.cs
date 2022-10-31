@@ -14,7 +14,7 @@ namespace Notifications.Consumers
 
         public Task Consume(ConsumeContext<AchievementUnlocked> context)
         {
-            _logger.LogInformation($"Message consumed: {context.Message.Id}");
+            _logger.LogInformation($"Message consumed: Achievement {context.Message.Id} unlocked.");
 
             return Task.CompletedTask;
         }
