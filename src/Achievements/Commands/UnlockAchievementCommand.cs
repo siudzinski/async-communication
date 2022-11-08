@@ -38,7 +38,7 @@ public class UnlockAchievementCommandHandler : ICommandHandler<UnlockAchievement
         achievement.Unlock();
 
         var outboxMessage = OutboxMessage.Create(new AchievementUnlocked { Id = command.AchievementId });
-        await _achievementsContext.OutboxMessages.AddAsync(outboxMessage);
+        await _achievementsContext.OutboxMessages.AddAsync(outboxMessage, cancellationToken);
 
         await _achievementsContext.SaveChangesAsync(cancellationToken);
 

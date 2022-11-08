@@ -1,7 +1,7 @@
 using Achievements.Contracts;
 using MassTransit;
 
-namespace Notifications.Consumers
+namespace Notifications.Achievements.Consumers
 {
     public class AchievementUnlockedConsumer : IConsumer<AchievementUnlocked>
     {

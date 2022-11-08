@@ -29,10 +29,10 @@ public class CreateAchievementCommandHandler : ICommandHandler<CreateAchievement
     {
         var achievement = Achievement.CreateNew();
 
-        await _achievementsContext.Achievements.AddAsync(achievement);
+        await _achievementsContext.Achievements.AddAsync(achievement, cancellationToken);
 
         var outboxMessage = OutboxMessage.Create(new AchievementCreated { Id = achievement.Id });
-        await _achievementsContext.OutboxMessages.AddAsync(outboxMessage);
+        await _achievementsContext.OutboxMessages.AddAsync(outboxMessage, cancellationToken);
 
         await _achievementsContext.SaveChangesAsync(cancellationToken);
 

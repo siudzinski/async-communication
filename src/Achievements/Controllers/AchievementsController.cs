@@ -20,17 +20,17 @@ public class AchievementsController : ControllerBase
     }
 
     [HttpPost("achievements")]
-    public async Task<ActionResult> Create()
+    public async Task<ActionResult> Create(CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateAchievementCommand());
+        await _mediator.Send(new CreateAchievementCommand(), cancellationToken);
 
         return Ok();
     }
 
     [HttpPost("achievements/{achievementId}/unlock")]
-    public async Task<ActionResult> Unlock(Guid achievementId)
+    public async Task<ActionResult> Unlock(Guid achievementId, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new UnlockAchievementCommand(achievementId));
+        await _mediator.Send(new UnlockAchievementCommand(achievementId), cancellationToken);
 
         return Ok();
     }
