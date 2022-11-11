@@ -2,7 +2,7 @@ using MediatR;
 using Notifications.Infrastructure;
 using Shared.CQRS;
 
-namespace Notifications.Achievements.Commands;
+namespace Notifications.Achievements.CreatingAchievements;
 
 public class CreateAchievementCommand : ICommand
 {

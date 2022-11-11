@@ -2,7 +2,6 @@ using System.Reflection;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Notifications;
 using Notifications.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

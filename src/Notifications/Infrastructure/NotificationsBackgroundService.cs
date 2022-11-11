@@ -1,8 +1,7 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using Notifications.Infrastructure;
 
-namespace Notifications;
+namespace Notifications.Infrastructure;
 
 public class NotificationsBackgroundService: BackgroundService
 {
