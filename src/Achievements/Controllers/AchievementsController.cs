@@ -1,6 +1,7 @@
-using Achievements.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Achievements.Domain.CreatingAchievement;
+using Achievements.Domain.UnlockingAchievement;
 
 namespace Achievements.Controllers;
 

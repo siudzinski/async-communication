@@ -1,8 +1,7 @@
-using Achievements.Domain;
 using Microsoft.EntityFrameworkCore;
 using Shared.Outbox;
 
-namespace Achievements.Infrastructure;
+namespace Achievements.Domain.Infrastructure;
 
 public class AchievementsContext : DbContext
 {

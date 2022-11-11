@@ -4,10 +4,14 @@ using System.Text.Json;
 using Dapper;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using Shared.Outbox;
 
-namespace Achievements.Infrastructure;
+namespace Achievements.Domain.Infrastructure;
 
 public class OutboxBackgroundService : BackgroundService
 {

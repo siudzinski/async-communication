@@ -1,11 +1,11 @@
 using Achievements.Contracts;
-using Achievements.Domain;
-using Achievements.Infrastructure;
+using Achievements.Domain.Infrastructure;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Shared.CQRS;
 using Shared.Outbox;
 
-namespace Achievements.Commands;
+namespace Achievements.Domain.CreatingAchievement;
 
 public class CreateAchievementCommand : ICommand
 {

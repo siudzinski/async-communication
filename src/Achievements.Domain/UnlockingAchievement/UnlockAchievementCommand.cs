@@ -1,12 +1,12 @@
 using Achievements.Contracts;
-using Achievements.Domain;
-using Achievements.Infrastructure;
+using Achievements.Domain.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.CQRS;
 using Shared.Outbox;
 
-namespace Achievements.Commands;
+namespace Achievements.Domain.UnlockingAchievement;
 
 public class UnlockAchievementCommand : ICommand
 {

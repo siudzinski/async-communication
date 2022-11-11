@@ -1,7 +1,6 @@
-using Achievements.Infrastructure;
+using Achievements.Domain;
 using MassTransit;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +14,7 @@ builder.Services.AddMassTransit(x =>
     x.UsingRabbitMq();
 });
 
-builder.Services.AddDbContext<AchievementsContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("postgres"))); //"Server=localhost;Port=5432;User Id=postgres;Password=password;"
-
-builder.Services.AddHostedService<OutboxBackgroundService>();
+builder.Services.AddAchievements(builder.Configuration);
 
 var app = builder.Build();
 
