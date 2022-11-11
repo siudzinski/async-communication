@@ -23,9 +23,19 @@ public class AchievementsController : ControllerBase
     [HttpPost("achievements")]
     public async Task<ActionResult> Create(CancellationToken cancellationToken)
     {
+        var command = new CreateAchievementCommand();
+
         await _mediator.Send(new CreateAchievementCommand(), cancellationToken);
 
-        return Ok();
+        return Created($"achievements/{command.Id}", command.Id);
+    }
+
+    [HttpGet("achievements/{id}")]
+    public async Task<ActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAchievementByIdQuery(id), cancellationToken);
+
+        return Ok(result);
     }
 
     [HttpPost("achievements/{achievementId}/unlock")]
@@ -35,12 +45,4 @@ public class AchievementsController : ControllerBase
 
         return Ok();
     }
-
-    // [HttpPost("achievements/{achievementId}/accomplish")]
-    // public async Task<ActionResult> Accomplish(Guid achievementId)
-    // {
-    //     await _publishEndpoint.Publish<IAchievementCompleted>(new { Id = achievementId });
-
-    //     return Ok();
-    // }
 }

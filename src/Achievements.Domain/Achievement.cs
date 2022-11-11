@@ -13,9 +13,9 @@ public class Achievement
         Id = id;
     }
 
-    public static Achievement CreateNew()
+    public static Achievement CreateNew(Guid id)
     {
-        return new Achievement(Guid.NewGuid());
+        return new Achievement(id);
     }
 
     public void Unlock()

@@ -9,7 +9,11 @@ namespace Achievements.Domain.CreatingAchievement;
 
 public class CreateAchievementCommand : ICommand
 {
-    public CreateAchievementCommand() { }
+    public Guid Id { get; }
+    public CreateAchievementCommand()
+    {
+        Id = Guid.NewGuid();
+    }
 }
 
 public class CreateAchievementCommandHandler : ICommandHandler<CreateAchievementCommand>
@@ -27,7 +31,7 @@ public class CreateAchievementCommandHandler : ICommandHandler<CreateAchievement
 
     public async Task<Unit> Handle(CreateAchievementCommand command, CancellationToken cancellationToken)
     {
-        var achievement = Achievement.CreateNew();
+        var achievement = Achievement.CreateNew(command.Id);
 
         await _achievementsContext.Achievements.AddAsync(achievement, cancellationToken);
 
